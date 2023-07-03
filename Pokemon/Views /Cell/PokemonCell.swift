@@ -18,19 +18,19 @@ struct PokemonCell: View {
             
             Spacer()
             
-            Button(action: {
-                isStarred.toggle()
-                // Perform any other actions when the star is tapped
-            }) {
-                ZStack {
-                    Circle()
-                        .foregroundColor(.gray)
-                    
-                    Image(systemName: isStarred ? "star.fill" : "star")
-                        .foregroundColor(.yellow)
-                }
-                .frame(width: 30, height: 30)
-            }
+//            Button(action: {
+//                // Perform any other actions when the star is tapped
+//                isStarred.toggle()
+//            }) {
+//                ZStack {
+//                    Circle()
+//                        .foregroundColor(.gray)
+//                    
+//                    Image(systemName: isStarred ? "star.fill" : "star")
+//                        .foregroundColor(.yellow)
+//                }
+//                .frame(width: 30, height: 30)
+//            }
         }
         .padding(.horizontal)
     }
@@ -38,6 +38,6 @@ struct PokemonCell: View {
 
 struct PokemonCell_Previews: PreviewProvider {
     static var previews: some View {
-        PokemonCell(pokemon: Pokemon(name: "Pika", url: "", isStarted: false))
+        PokemonCell(pokemon: Pokemon(id: UUID(), name: "Pika", url: "", isStarted: false))
     }
 }

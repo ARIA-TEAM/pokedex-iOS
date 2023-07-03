@@ -10,6 +10,9 @@ import SwiftUI
 struct ListView: View {
     
     @StateObject private var viewModel = PokemonViewModel()
+    @State private var isShowingModal = false // Add a state variable to control the visibility of the modal
+    @State private var selectedPokemon: Pokemon? // Add a state variable for the selected Pokemon
+    @State private var isLoading = true
     
     var filteredPokemons: [Pokemon] {
         if viewModel.searchText.isEmpty {
@@ -26,6 +29,10 @@ struct ListView: View {
             
             List(filteredPokemons, id: \.name) { pokemon in
                 PokemonCell(pokemon: pokemon)
+                    .onTapGesture {
+                        selectedPokemon = pokemon
+                        isShowingModal = true // Show the modal
+                    }
             }
             
             HStack {
@@ -39,7 +46,7 @@ struct ListView: View {
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
+                .frame(maxWidth: .infinity)
                 
                 Button(action: {
                     // Perform action for the second button
@@ -51,15 +58,22 @@ struct ListView: View {
                         .background(Color.green)
                         .cornerRadius(10)
                 }
-                .frame(minWidth: 0, maxWidth: .infinity)
+                .frame(maxWidth: .infinity)
             }
             .padding()
             .frame(height: 50)
-            
         }
         .navigationTitle("Pokemon List")
+        .onAppear {
+            viewModel.fetchData()
+        }
+        .sheet(item: $selectedPokemon) { pokemon in
+            ModalView(pokemon: pokemon, isPresented: $isShowingModal)
+        }
     }
+        
 }
+
 
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {
