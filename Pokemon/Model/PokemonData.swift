@@ -11,6 +11,7 @@ struct PokemonData: Codable {
     let weight: Float
     let height: Float
     let types: [PokemonType]?
+    let sprites: Sprite?
 }
 
 struct PokemonType: Codable {
@@ -21,4 +22,16 @@ struct PokemonType: Codable {
 struct TypeDetail: Codable {
     let name: String
     let url: String
+}
+
+struct Sprite: Codable {
+    let other: Other?
+}
+
+struct Other: Codable {
+    let dream_world: DreamWorld?
+}
+
+struct DreamWorld: Codable {
+    let front_default: URL?
 }

@@ -38,8 +38,11 @@ class PokemonViewModel: ObservableObject {
     /**
      Fetches additional data for a given Pokemon using the provided URL.
      */
-    func fetchPokemonData(for pokemon: Pokemon) {
-        guard let url = URL(string: pokemon.url) else { return }
+    func fetchPokemonData(for pokemon: Pokemon, completion: @escaping (Bool) -> Void) {
+        guard let url = URL(string: pokemon.url) else {
+            completion(false)
+            return
+        }
         
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             guard let data = data else { return }
@@ -48,8 +51,10 @@ class PokemonViewModel: ObservableObject {
                 DispatchQueue.main.async {
                     self.pokemonData = response
                     dump(self.pokemonData)
+                    completion(true)
                 }
-                
+            } else {
+                completion(false)
             }
         }.resume()
     }
