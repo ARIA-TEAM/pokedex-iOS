@@ -13,14 +13,23 @@ struct ListView: View {
     @State private var isShowingModal = false // Add a state variable to control the visibility of the modal
     @State private var selectedPokemon: Pokemon? // Add a state variable for the selected Pokemon
     @State private var isLoading = true
+    @State private var showFavoritesOnly = false
     
+        
     var filteredPokemons: [Pokemon] {
-        if viewModel.searchText.isEmpty {
-            return viewModel.pokemons
-        } else {
-            return viewModel.pokemons.filter { $0.name.lowercased().contains(viewModel.searchText.lowercased()) }
+        var filtered = viewModel.pokemons
+        
+        if showFavoritesOnly {
+            filtered = filtered.filter { $0.isFavorite! }
         }
+        
+        if !viewModel.searchText.isEmpty {
+            filtered = filtered.filter { $0.name.lowercased().contains(viewModel.searchText.lowercased()) }
+        }
+        
+        return filtered
     }
+
     
     var body: some View {
         VStack {
@@ -28,7 +37,7 @@ struct ListView: View {
                 .padding()
             
             List(filteredPokemons, id: \.name) { pokemon in
-                PokemonCell(pokemon: pokemon)
+                PokemonCell(pokemon: pokemon, viewModel: viewModel)
                     .onTapGesture {
                         selectedPokemon = pokemon
                         isShowingModal = true // Show the modal
@@ -38,6 +47,7 @@ struct ListView: View {
             HStack {
                 Button(action: {
                     // Perform action for the first button
+                    showFavoritesOnly = false
                 }) {
                     Text("All")
                         .foregroundColor(.white)
@@ -50,6 +60,7 @@ struct ListView: View {
                 
                 Button(action: {
                     // Perform action for the second button
+                    showFavoritesOnly = true
                 }) {
                     Text("Favorites")
                         .foregroundColor(.white)

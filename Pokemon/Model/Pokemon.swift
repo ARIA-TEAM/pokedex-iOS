@@ -14,6 +14,6 @@ struct Pokemon: Codable, Equatable, Identifiable {
     let id: UUID?
     let name: String
     let url: String
-    var isStarted: Bool?
+    var isFavorite: Bool? = false
 }
 

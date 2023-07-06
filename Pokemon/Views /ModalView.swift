@@ -19,6 +19,23 @@ struct ModalView: View {
         return viewModel.pokemonData ?? PokemonData(weight: 0.0, height: 0.0, types: [], sprites: nil)
     }
     
+    var capitalizedPokemonName: String {
+        let name = pokemon.name
+        return name.capitalized
+    }
+    
+    var weightInKilograms: String {
+        let hectograms = pokemonData.weight
+        let kilograms = hectograms * 0.1
+        return String(format: "%.2f", kilograms)
+    }
+    
+    var heightInMeters: String {
+        let decimeters = pokemonData.height
+        let meters = decimeters * 0.1
+        return String(format: "%.2f", meters)
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -57,7 +74,7 @@ struct ModalView: View {
                 
                 Divider()
                 
-                Text("Name: \(pokemon.name)")
+                Text("Name: \(capitalizedPokemonName)")
                     .font(
                         Font.custom("Lato", size: 18)
                             .weight(.bold)
@@ -66,7 +83,7 @@ struct ModalView: View {
                 
                 Divider()
                 
-                Text("Weight: \(pokemonData.weight)")
+                Text("Weight: \(weightInKilograms) kg")
                     .font(
                         Font.custom("Lato", size: 18)
                             .weight(.bold)
@@ -75,7 +92,7 @@ struct ModalView: View {
                 
                 Divider()
                 
-                Text("Height: \(pokemonData.height)")
+                Text("Height: \(heightInMeters) m")
                     .font(
                         Font.custom("Lato", size: 18)
                             .weight(.bold)

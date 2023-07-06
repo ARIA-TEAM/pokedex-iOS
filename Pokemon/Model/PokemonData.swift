@@ -8,8 +8,8 @@
 import Foundation
 
 struct PokemonData: Codable {
-    let weight: Float
-    let height: Float
+    let weight: Double
+    let height: Double
     let types: [PokemonType]?
     let sprites: Sprite?
 }
