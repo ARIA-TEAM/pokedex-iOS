@@ -44,32 +44,44 @@ struct ListView: View {
                     }
             }
             
-            HStack {
+            HStack(spacing: 20) {
                 Button(action: {
                     // Perform action for the first button
                     showFavoritesOnly = false
                 }) {
-                    Text("All")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                    Label(
+                                    title: {
+                                        Text("All")
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                    },
+                                    icon: {
+                                        Image(systemName: "list.bullet")
+                                            .foregroundColor(.white)
+                                    }
+                                )
                 }
-                .frame(maxWidth: .infinity)
+                .buttonStyle(ActionButtonStyle())
+                
                 
                 Button(action: {
                     // Perform action for the second button
                     showFavoritesOnly = true
                 }) {
-                    Text("Favorites")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(10)
+                    Label(
+                                    title: {
+                                        Text("Favorites")
+                                            .foregroundColor(.white)
+                                            .font(.headline)
+                                    },
+                                    icon: {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.white)
+                                    }
+                                )
                 }
-                .frame(maxWidth: .infinity)
+                .buttonStyle(ActionButtonStyle())
+                
             }
             .padding()
             .frame(height: 50)
