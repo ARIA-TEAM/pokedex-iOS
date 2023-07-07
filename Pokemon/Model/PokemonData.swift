@@ -29,9 +29,27 @@ struct Sprite: Codable {
 }
 
 struct Other: Codable {
-    let dream_world: DreamWorld?
+    let dreamWorld: DreamWorld?
+    let officialArtwork: OficialArtWork?
+    
+    enum CodingKeys: String, CodingKey {
+        case dreamWorld = "dream_world"
+        case officialArtwork = "official-artwork"
+    }
 }
 
 struct DreamWorld: Codable {
-    let front_default: URL?
+    let frontDefault: URL?
+        
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+    }
+}
+
+struct OficialArtWork: Codable {
+    let frontDefault: String
+        
+    enum CodingKeys: String, CodingKey {
+        case frontDefault = "front_default"
+    }
 }

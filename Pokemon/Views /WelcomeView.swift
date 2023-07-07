@@ -14,7 +14,7 @@ struct WelcomeView: View {
         VStack(spacing: 20) {
             Image("Pikachu")
                 .resizable()
-                .frame(width: 200, height: 200)
+                .frame(width: 250, height: 200)
             
             Text("Welcome to Pokédex")
                 .font(

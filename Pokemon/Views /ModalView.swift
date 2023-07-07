@@ -13,7 +13,7 @@ struct ModalView: View {
     
     @State private var isLoading = true
     @State private var error: Error?
-    @State private var svgContent: String?
+    @State private var imageUrl: URL?
     
     var pokemonData: PokemonData {
         return viewModel.pokemonData ?? PokemonData(weight: 0.0, height: 0.0, types: [], sprites: nil)
@@ -58,18 +58,9 @@ struct ModalView: View {
                         .frame(width: 400, height: 200)
                         .cornerRadius(10)
                     
-                    // Load SVG image
-                    if isLoading {
-                        ProgressView()
-                    } else if let svgContent = svgContent {
-                        SVGWebView(svgContent: svgContent)
-                            .frame(width: 150, height: 150)
-                    } else if let error = error {
-                        Text("Error: \(error.localizedDescription)")
-                            .foregroundColor(.red)
-                    } else {
-                        Color.gray
-                    }
+                    // The pokemon image
+                    ImageView(url: imageUrl)
+                    
                 }
                 
                 Divider()
@@ -115,7 +106,7 @@ struct ModalView: View {
         .onAppear {
             viewModel.fetchPokemonData(for: pokemon) { success in
                 if success {
-                    loadSVGContent(from: pokemonData.sprites?.other?.dream_world?.front_default)
+                    self.imageUrl = URL(string: (pokemonData.sprites?.other?.officialArtwork!.frontDefault)!)
                 }
             }
         }
@@ -130,65 +121,22 @@ struct ModalView: View {
         }
         return ""
     }
+}
+
+struct ImageView: View {
     
-    func loadSVGContent(from url: URL?) {
-        guard let url = url else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            DispatchQueue.main.async {
-                if let error = error {
-                    self.error = error
-                } else if let data = data {
-                    if let svgString = String(data: data, encoding: .utf8) {
-                        self.svgContent = svgString
-                    } else {
-                        self.error = NSError(domain: "SVGConversionError", code: 0, userInfo: nil)
-                    }
-                }
-                self.isLoading = false
-            }
-        }.resume()
+    var url: URL?
+    
+    var body: some View {
+        AsyncImage(url: url) { img in
+            img
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200, alignment: .center)
+        } placeholder: {
+            
+        }
     }
 }
 
-struct SVGWebView: UIViewRepresentable {
-    let svgContent: String
-    
-    func makeUIView(context: Context) -> WKWebView {
-        let webView = WKWebView()
-        webView.isOpaque = false
-        webView.backgroundColor = .clear // Set background color to clear
-        
-        return webView
-    }
-    
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        let htmlString = """
-                <!DOCTYPE html>
-                <html>
-                <head>
-                <style>
-                html, body {
-                    height: 100%;
-                    margin: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-color: transparent;
-                }
-                
-                svg {
-                    max-width: 100%;
-                    max-height: 100%;
-                }
-                </style>
-                </head>
-                <body>
-                \(svgContent)
-                </body>
-                </html>
-                """
-        uiView.loadHTMLString(htmlString, baseURL: nil)
-    }
-}
 
