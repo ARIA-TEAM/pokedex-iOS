@@ -120,9 +120,6 @@ struct ModalView: View {
                 
                 Button(action: {
                     isStarred.toggle()
-//                    if let index = viewModel.pokemons.firstIndex(of: pokemon) {
-//                        viewModel.pokemons[index].isFavorite = isStarred
-//                    }
                 }) {
                     Image(systemName: isStarred ? "star.fill" : "star")
                         .resizable()
