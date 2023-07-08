@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActionButtonStyle: ButtonStyle {
     
-    var selectedOption: ListView.ButtonOption // Add selectedOption as a parameter
+    var selectedOption: ListView.ButtonOption? // Add selectedOption as a parameter
         
     
     func makeBody(configuration: Configuration) -> some View {

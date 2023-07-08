@@ -15,6 +15,8 @@ class PokemonViewModel: ObservableObject {
     @Published var pokemons: [Pokemon] = [] // List of pokemons
     @Published var searchText: String = ""
     @Published var pokemonData: PokemonData?
+    
+    var updateFavorites: ((Pokemon) -> Void)? // Closure to update favorites
         
     /**
      Fetches Pokemon data from the API and populates the `pokemons` array.
@@ -59,9 +61,16 @@ class PokemonViewModel: ObservableObject {
         }.resume()
     }
     
+//    func toggleFavorite(for pokemon: Pokemon) {
+//        if let index = pokemons.firstIndex(of: pokemon) {
+//            pokemons[index].isFavorite!.toggle()
+//        }
+//    }
+    
     func toggleFavorite(for pokemon: Pokemon) {
         if let index = pokemons.firstIndex(of: pokemon) {
-            pokemons[index].isFavorite!.toggle()
+            pokemons[index].isFavorite = !pokemon.isFavorite!
         }
     }
+    
 }

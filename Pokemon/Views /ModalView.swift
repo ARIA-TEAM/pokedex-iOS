@@ -16,6 +16,8 @@ struct ModalView: View {
     @State private var imageUrl: URL?
     @State private var isStarred: Bool = false
     
+    var updateFavorites: ((Pokemon) -> Void)?
+    
     var pokemonData: PokemonData {
         return viewModel.pokemonData ?? PokemonData(weight: 0.0, height: 0.0, types: [], sprites: nil)
     }
@@ -35,6 +37,13 @@ struct ModalView: View {
         let decimeters = pokemonData.height
         let meters = decimeters * 0.1
         return String(format: "%.2f", meters)
+    }
+    
+    init(pokemon: Pokemon, isPresented: Binding<Bool>, updateFavorites: @escaping (Pokemon) -> Void) {
+        self.pokemon = pokemon
+        self._isPresented = isPresented
+        self.updateFavorites = updateFavorites
+        _isStarred = State(initialValue: pokemon.isFavorite ?? false ? true : false)
     }
     
     var body: some View {
@@ -109,17 +118,15 @@ struct ModalView: View {
                     // Perform action for sharing
                     // Add your sharing logic here
                 }) {
-                    Text("Share with Friends")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                    Text("Share to my friends")
                 }
-                .frame(maxWidth: .infinity)
+                .buttonStyle(ActionButtonStyle(selectedOption: .all))
+                .padding(.leading, 50)
                 
                 Button(action: {
-                    isStarred.toggle()
+//                    isStarred.toggle()
+//                    viewModel.toggleFavorite(for: pokemon) // Toggle the favorite state
+                    toggleFavorite()
                 }) {
                     Image(systemName: isStarred ? "star.fill" : "star")
                         .resizable()
@@ -129,9 +136,7 @@ struct ModalView: View {
                         .background(Color.gray.opacity(0.2))
                         .clipShape(Circle())
                 }
-                .onTapGesture {
-                    isStarred.toggle()
-                }
+                .padding(.trailing, 50)
             }
         }
         .onAppear {
@@ -151,6 +156,11 @@ struct ModalView: View {
             return joinedNames
         }
         return ""
+    }
+    
+    func toggleFavorite() {
+        isStarred.toggle()
+        updateFavorites?(pokemon) // Call the closure to update favorites
     }
 }
 
