@@ -11,6 +11,10 @@ struct PokemonCell: View {
     var pokemon: Pokemon
     @State private var isStarred: Bool = false
     @ObservedObject var viewModel: PokemonViewModel
+    @State private var isTapped = false // Track if the row is tapped
+    @Binding var isShowingModal: Bool // Binding to control the visibility of the modal
+    @Binding var selectedPokemon: Pokemon? // Binding to pass the selected Pokemon to the modal
+        
     
     var capitalizedPokemonName: String {
         let name = pokemon.name
@@ -25,10 +29,7 @@ struct PokemonCell: View {
             Spacer()
             
             Button(action: {
-                isStarred.toggle()
-                if let index = viewModel.pokemons.firstIndex(of: pokemon) {
-                    viewModel.pokemons[index].isFavorite = isStarred
-                }
+
             }) {
                 Image(systemName: isStarred ? "star.fill" : "star")
                     .resizable()
@@ -40,15 +41,20 @@ struct PokemonCell: View {
             }
             .onTapGesture {
                 isStarred.toggle()
+                isTapped = true // Mark the row as tapped
+                viewModel.toggleFavorite(for: pokemon) // Toggle the favorite state
             }
             
         }
         .padding(.horizontal)
-    }
-}
-
-struct PokemonCell_Previews: PreviewProvider {
-    static var previews: some View {
-        PokemonCell(pokemon: Pokemon(id: UUID(), name: "Pika", url: "", isFavorite: true), viewModel: PokemonViewModel())
+        .contentShape(Rectangle()) // Add a content shape to capture taps on the entire row
+        .onTapGesture {
+            if !isTapped { // Show the modal only if the row is not tapped on the star
+                isShowingModal = true // Set the flag to show the modal
+                selectedPokemon = pokemon // Pass the selected Pokemon to the modal
+            } else {
+                isTapped = false // Reset the tapped state
+            }
+        }
     }
 }

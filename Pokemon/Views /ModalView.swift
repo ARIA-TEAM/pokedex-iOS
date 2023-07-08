@@ -14,6 +14,7 @@ struct ModalView: View {
     @State private var isLoading = true
     @State private var error: Error?
     @State private var imageUrl: URL?
+    @State private var isStarred: Bool = false
     
     var pokemonData: PokemonData {
         return viewModel.pokemonData ?? PokemonData(weight: 0.0, height: 0.0, types: [], sprites: nil)
@@ -102,6 +103,39 @@ struct ModalView: View {
             .padding()
             
             Spacer()
+            
+            HStack(spacing: 20) {
+                Button(action: {
+                    // Perform action for sharing
+                    // Add your sharing logic here
+                }) {
+                    Text("Share with Friends")
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .frame(maxWidth: .infinity)
+                
+                Button(action: {
+                    isStarred.toggle()
+//                    if let index = viewModel.pokemons.firstIndex(of: pokemon) {
+//                        viewModel.pokemons[index].isFavorite = isStarred
+//                    }
+                }) {
+                    Image(systemName: isStarred ? "star.fill" : "star")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(isStarred ? .yellow : .gray)
+                        .padding(8)
+                        .background(Color.gray.opacity(0.2))
+                        .clipShape(Circle())
+                }
+                .onTapGesture {
+                    isStarred.toggle()
+                }
+            }
         }
         .onAppear {
             viewModel.fetchPokemonData(for: pokemon) { success in

@@ -58,4 +58,10 @@ class PokemonViewModel: ObservableObject {
             }
         }.resume()
     }
+    
+    func toggleFavorite(for pokemon: Pokemon) {
+        if let index = pokemons.firstIndex(of: pokemon) {
+            pokemons[index].isFavorite!.toggle()
+        }
+    }
 }

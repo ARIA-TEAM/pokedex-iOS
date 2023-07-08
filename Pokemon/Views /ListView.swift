@@ -15,7 +15,14 @@ struct ListView: View {
     @State private var isLoading = true
     @State private var showFavoritesOnly = false
     
-        
+    @State private var selectedOption: ButtonOption = .all // Track the selected option
+    
+    enum ButtonOption {
+        case all
+        case favorites
+    }
+    
+    
     var filteredPokemons: [Pokemon] {
         var filtered = viewModel.pokemons
         
@@ -29,7 +36,7 @@ struct ListView: View {
         
         return filtered
     }
-
+    
     
     var body: some View {
         VStack {
@@ -37,10 +44,9 @@ struct ListView: View {
                 .padding()
             
             List(filteredPokemons, id: \.name) { pokemon in
-                PokemonCell(pokemon: pokemon, viewModel: viewModel)
+                PokemonCell(pokemon: pokemon, viewModel: viewModel, isShowingModal: $isShowingModal, selectedPokemon: $selectedPokemon)
                     .onTapGesture {
                         selectedPokemon = pokemon
-                        isShowingModal = true // Show the modal
                     }
             }
             
@@ -48,39 +54,41 @@ struct ListView: View {
                 Button(action: {
                     // Perform action for the first button
                     showFavoritesOnly = false
+                    
                 }) {
                     Label(
-                                    title: {
-                                        Text("All")
-                                            .foregroundColor(.white)
-                                            .font(.headline)
-                                    },
-                                    icon: {
-                                        Image(systemName: "list.bullet")
-                                            .foregroundColor(.white)
-                                    }
-                                )
+                        title: {
+                            Text("All")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        },
+                        icon: {
+                            Image(systemName: "list.bullet")
+                                .foregroundColor(.white)
+                        }
+                    )
                 }
-                .buttonStyle(ActionButtonStyle())
+                .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
                 
                 
                 Button(action: {
                     // Perform action for the second button
                     showFavoritesOnly = true
+                    
                 }) {
                     Label(
-                                    title: {
-                                        Text("Favorites")
-                                            .foregroundColor(.white)
-                                            .font(.headline)
-                                    },
-                                    icon: {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.white)
-                                    }
-                                )
+                        title: {
+                            Text("Favorites")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        },
+                        icon: {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.white)
+                        }
+                    )
                 }
-                .buttonStyle(ActionButtonStyle())
+                .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
                 
             }
             .padding()
@@ -94,7 +102,7 @@ struct ListView: View {
             ModalView(pokemon: pokemon, isPresented: $isShowingModal)
         }
     }
-        
+    
 }
 
 
