@@ -15,8 +15,6 @@ class PokemonViewModel: ObservableObject {
     @Published var pokemons: [Pokemon] = [] // List of pokemons
     @Published var searchText: String = ""
     @Published var pokemonData: PokemonData?
-    
-    var updateFavorites: ((Pokemon) -> Void)? // Closure to update favorites
         
     /**
      Fetches Pokemon data from the API and populates the `pokemons` array.

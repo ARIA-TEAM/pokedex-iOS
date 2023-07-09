@@ -99,9 +99,11 @@ struct ListView: View {
             viewModel.fetchData()
         }
         .sheet(item: $selectedPokemon) { pokemon in
-            ModalView(pokemon: pokemon, isPresented: $isShowingModal) { updatedPokemon in
+            ModalView(pokemon: pokemon, isPresented: $isShowingModal) { updatedPokemon  in
                 // Update favorites in the ListView
                 viewModel.toggleFavorite(for: updatedPokemon)
+                dump(updatedPokemon)
+                
             }
         }
     }

@@ -124,8 +124,6 @@ struct ModalView: View {
                 .padding(.leading, 50)
                 
                 Button(action: {
-//                    isStarred.toggle()
-//                    viewModel.toggleFavorite(for: pokemon) // Toggle the favorite state
                     toggleFavorite()
                 }) {
                     Image(systemName: isStarred ? "star.fill" : "star")
