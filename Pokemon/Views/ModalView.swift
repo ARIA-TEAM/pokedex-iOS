@@ -76,11 +76,9 @@ struct ModalView: View {
                 Divider()
                 
                 Text("Name: \(capitalizedPokemonName)")
-                    .font(
-                        Font.custom("Lato", size: 18)
-                            .weight(.bold)
-                    )
+                    .font(Font.custom("Lato", size: 18).weight(.bold))
                     .foregroundColor(Color(red: 0.37, green: 0.37, blue: 0.37))
+                    .redacted(when: isLoading)
                 
                 Divider()
                 
@@ -90,6 +88,7 @@ struct ModalView: View {
                             .weight(.bold)
                     )
                     .foregroundColor(Color(red: 0.37, green: 0.37, blue: 0.37))
+                    .redacted(when: isLoading)
                 
                 Divider()
                 
@@ -99,6 +98,7 @@ struct ModalView: View {
                             .weight(.bold)
                     )
                     .foregroundColor(Color(red: 0.37, green: 0.37, blue: 0.37))
+                    .redacted(when: isLoading)
                 
                 Divider()
                 
@@ -108,6 +108,7 @@ struct ModalView: View {
                             .weight(.bold)
                     )
                     .foregroundColor(Color(red: 0.37, green: 0.37, blue: 0.37))
+                    .redacted(when: isLoading)
             }
             .padding()
             
@@ -136,15 +137,20 @@ struct ModalView: View {
                 }
                 .padding(.trailing, 50)
             }
+            Spacer()
         }
         .background(Color.white)
         .onAppear {
-            viewModel.fetchPokemonData(for: pokemon) { success in
-                if success {
-                    self.imageUrl = URL(string: (pokemonData.sprites?.other?.officialArtwork!.frontDefault)!)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                viewModel.fetchPokemonData(for: pokemon) { success in
+                    if success {
+                        self.imageUrl = URL(string: (pokemonData.sprites?.other?.officialArtwork!.frontDefault)!)
+                        self.isLoading = false
+                    }
                 }
             }
         }
+        .animation(.easeOut)
     }
     
     func getAllTypes(data: PokemonData) -> String {

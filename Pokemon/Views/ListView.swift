@@ -93,17 +93,17 @@ struct ListView: View {
                     .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
                     
                 }
-                .blur(radius: isShowingModal ? 3 : 0)
                 .padding()
                 .frame(height: 50)
                 
             }
+            .blur(radius: isShowingModal ? 3 : 0)
             .popup(isPresented: isShowingModal, alignment: .center, direction: .bottom) {
                 if let selectedPokemon = selectedPokemon {
                     ModalView(pokemon: selectedPokemon, isPresented: $isShowingModal) { updatedPokemon in
                         viewModel.toggleFavorite(for: updatedPokemon)
                     }
-                    .frame(width: 350, height: 600)
+                    .frame(width: 330, height: 600)
                     .cornerRadius(20)
                     .zIndex(1)
                 }
