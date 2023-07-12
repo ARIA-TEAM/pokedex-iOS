@@ -129,7 +129,6 @@
 				96842B8B2A50E40100295028 /* ViewModel */,
 				96842B862A50E3A500295028 /* Model */,
 				961428D12A4E2E8000732A37 /* Info.plist */,
-				961428CB2A4E2C7400732A37 /* Splash */,
 				961428CA2A4E2C6F00732A37 /* Views */,
 				961428A02A4E29EC00732A37 /* PokemonApp.swift */,
 				961428A22A4E29EC00732A37 /* ContentView.swift */,
@@ -175,13 +174,6 @@
 				9606647D2A519D54006271F7 /* ModalView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		961428CB2A4E2C7400732A37 /* Splash */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Splash;
 			sourceTree = "<group>";
 		};
 		96842B862A50E3A500295028 /* Model */ = {
