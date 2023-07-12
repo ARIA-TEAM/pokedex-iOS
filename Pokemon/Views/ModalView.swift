@@ -16,6 +16,8 @@ struct ModalView: View {
     @State private var imageUrl: URL?
     @State private var isStarred: Bool = false
     
+    @State private var isShareSheetPresented = false
+    
     var updateFavorites: ((Pokemon) -> Void)?
     
     var pokemonData: PokemonData {
@@ -118,11 +120,15 @@ struct ModalView: View {
                 Button(action: {
                     // Perform action for sharing
                     // Add your sharing logic here
+                    isShareSheetPresented = true
                 }) {
                     Text("Share to my friends")
                 }
                 .buttonStyle(ActionButtonStyle(selectedOption: .all))
                 .padding(.leading, 50)
+                .sheet(isPresented: $isShareSheetPresented, content: {
+                    shareSheet
+                })
                 
                 Button(action: {
                     toggleFavorite()
@@ -151,6 +157,32 @@ struct ModalView: View {
             }
         }
         .animation(.easeOut)
+    }
+    
+    // Share Sheet view
+    var shareSheet: some View {
+        let textToShare = """
+                Name: \(capitalizedPokemonName)
+                Weight: \(weightInKilograms) kg
+                Height: \(heightInMeters) m
+                Types: \(getAllTypes(data: pokemonData))
+            """
+        
+        let activityViewController = UIActivityViewController(activityItems: [textToShare], applicationActivities: nil)
+        
+        // Callback when share sheet is dismissed
+        activityViewController.completionWithItemsHandler = { (activityType, completed, _, _) in
+            if completed {
+                // Handle completion
+            }
+            isShareSheetPresented = false // Dismiss the share sheet
+        }
+        
+        // UIKit to SwiftUI bridge
+        let viewController = UIApplication.shared.windows.first?.rootViewController
+        viewController?.present(activityViewController, animated: true, completion: nil)
+        
+        return EmptyView()
     }
     
     func getAllTypes(data: PokemonData) -> String {
