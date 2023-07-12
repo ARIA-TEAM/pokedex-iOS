@@ -39,74 +39,81 @@ struct ListView: View {
     
     
     var body: some View {
-        VStack {
-            SearchBar(text: $viewModel.searchText)
-                .padding()
-            
-            List(filteredPokemons, id: \.name) { pokemon in
-                PokemonCell(pokemon: pokemon, viewModel: viewModel, isShowingModal: $isShowingModal, selectedPokemon: $selectedPokemon)
-                    .onTapGesture {
-                        selectedPokemon = pokemon
+        ZStack {
+            VStack {
+                SearchBar(text: $viewModel.searchText)
+                    .padding()
+                
+                List(filteredPokemons, id: \.name) { pokemon in
+                    PokemonCell(pokemon: pokemon, viewModel: viewModel, isShowingModal: $isShowingModal, selectedPokemon: $selectedPokemon)
+                        .onTapGesture {
+                            selectedPokemon = pokemon
+                            isShowingModal = true
+                        }
+                }
+                
+                HStack(spacing: 20) {
+                    Button(action: {
+                        // Perform action for the first button
+                        showFavoritesOnly = false
+                        
+                    }) {
+                        Label(
+                            title: {
+                                Text("All")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                            },
+                            icon: {
+                                Image(systemName: "list.bullet")
+                                    .foregroundColor(.white)
+                            }
+                        )
                     }
-            }
-            
-            HStack(spacing: 20) {
-                Button(action: {
-                    // Perform action for the first button
-                    showFavoritesOnly = false
+                    .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
                     
-                }) {
-                    Label(
-                        title: {
-                            Text("All")
-                                .foregroundColor(.white)
-                                .font(.headline)
-                        },
-                        icon: {
-                            Image(systemName: "list.bullet")
-                                .foregroundColor(.white)
-                        }
-                    )
-                }
-                .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
-                
-                
-                Button(action: {
-                    // Perform action for the second button
-                    showFavoritesOnly = true
                     
-                }) {
-                    Label(
-                        title: {
-                            Text("Favorites")
-                                .foregroundColor(.white)
-                                .font(.headline)
-                        },
-                        icon: {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.white)
-                        }
-                    )
+                    Button(action: {
+                        // Perform action for the second button
+                        showFavoritesOnly = true
+                        
+                    }) {
+                        Label(
+                            title: {
+                                Text("Favorites")
+                                    .foregroundColor(.white)
+                                    .font(.headline)
+                            },
+                            icon: {
+                                Image(systemName: "star.fill")
+                                    .foregroundColor(.white)
+                            }
+                        )
+                    }
+                    .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
+                    
                 }
-                .buttonStyle(ActionButtonStyle(selectedOption: selectedOption))
+                .blur(radius: isShowingModal ? 3 : 0)
+                .padding()
+                .frame(height: 50)
                 
             }
-            .padding()
-            .frame(height: 50)
+            .popup(isPresented: isShowingModal, alignment: .center, direction: .bottom) {
+                if let selectedPokemon = selectedPokemon {
+                    ModalView(pokemon: selectedPokemon, isPresented: $isShowingModal) { updatedPokemon in
+                        viewModel.toggleFavorite(for: updatedPokemon)
+                    }
+                    .frame(width: 350, height: 600)
+                    .cornerRadius(20)
+                    .zIndex(1)
+                }
+            }
         }
-        .navigationTitle("Pokemon List")
         .onAppear {
             viewModel.fetchData()
         }
-        .sheet(item: $selectedPokemon) { pokemon in
-            ModalView(pokemon: pokemon, isPresented: $isShowingModal) { updatedPokemon  in
-                // Update favorites in the ListView
-                viewModel.toggleFavorite(for: updatedPokemon)
-                dump(updatedPokemon)
-                
-            }
-        }
     }
+    
     
 }
 

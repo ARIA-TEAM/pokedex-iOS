@@ -51,7 +51,7 @@ struct ModalView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss()
+                    self.isPresented = false
                 }) {
                     Image(systemName: "xmark")
                         .font(.headline)
@@ -137,6 +137,7 @@ struct ModalView: View {
                 .padding(.trailing, 50)
             }
         }
+        .background(Color.white)
         .onAppear {
             viewModel.fetchPokemonData(for: pokemon) { success in
                 if success {
@@ -178,4 +179,9 @@ struct ImageView: View {
     }
 }
 
+struct ModalView_Previews: PreviewProvider {
+    static var previews: some View {
+        ModalView(pokemon: Pokemon(id: UUID(), name: "Pikachu", url: "https://pokeapi.co/api/v2/pokemon/25/"), isPresented: .constant(true), updateFavorites: { _ in })
+    }
+}
 
