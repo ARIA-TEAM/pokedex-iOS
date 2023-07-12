@@ -130,7 +130,7 @@
 				96842B862A50E3A500295028 /* Model */,
 				961428D12A4E2E8000732A37 /* Info.plist */,
 				961428CB2A4E2C7400732A37 /* Splash */,
-				961428CA2A4E2C6F00732A37 /* Views  */,
+				961428CA2A4E2C6F00732A37 /* Views */,
 				961428A02A4E29EC00732A37 /* PokemonApp.swift */,
 				961428A22A4E29EC00732A37 /* ContentView.swift */,
 				961428A42A4E29EF00732A37 /* Assets.xcassets */,
@@ -164,7 +164,7 @@
 			path = PokemonUITests;
 			sourceTree = "<group>";
 		};
-		961428CA2A4E2C6F00732A37 /* Views  */ = {
+		961428CA2A4E2C6F00732A37 /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				96842B8E2A50EA4E00295028 /* Cell */,
@@ -174,7 +174,7 @@
 				96842B842A50D88500295028 /* SearchBar.swift */,
 				9606647D2A519D54006271F7 /* ModalView.swift */,
 			);
-			path = "Views ";
+			path = Views;
 			sourceTree = "<group>";
 		};
 		961428CB2A4E2C7400732A37 /* Splash */ = {
