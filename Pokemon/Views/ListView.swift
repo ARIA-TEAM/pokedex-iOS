@@ -105,6 +105,10 @@ struct ListView: View {
                     }
                     .frame(width: 330, height: 600)
                     .cornerRadius(20)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(.gray, lineWidth: 0.2)
+                    )
                     .zIndex(1)
                 }
             }
