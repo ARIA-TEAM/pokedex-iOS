@@ -20,7 +20,7 @@ class PokemonViewModel: ObservableObject {
      Fetches Pokemon data from the API and populates the `pokemons` array.
      */
     func fetchData() {
-        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=1118") else { return }
+        guard let url = URL(string: "https://pokeapi.co/api/v2/pokemon?limit=-1") else { return }
         
         URLSession.shared.dataTask(with: url) { (data, _, _) in
             guard let data = data else { return }
