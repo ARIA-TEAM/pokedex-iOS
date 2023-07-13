@@ -50,7 +50,10 @@ struct ListView: View {
                             selectedPokemon = pokemon
                             isShowingModal = true
                         }
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(Color.clear)
                 }
+                
                 
                 HStack(spacing: 20) {
                     Button(action: {

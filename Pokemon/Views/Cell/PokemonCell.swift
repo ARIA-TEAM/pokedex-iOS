@@ -46,7 +46,11 @@ struct PokemonCell: View {
             }
             
         }
-        .padding(.horizontal)
+        .padding()
+        .frame(height: 60)
+        .background(Color.white) // Give cell a background color
+        .cornerRadius(10) // Round the corners for a card-like appearance
+        .shadow(radius: 0.5) // Add a shadow for a slightly elevated effect
         .contentShape(Rectangle()) // Add a content shape to capture taps on the entire row
         .onTapGesture {
             if !isTapped { // Show the modal only if the row is not tapped on the star
@@ -56,5 +60,18 @@ struct PokemonCell: View {
                 isTapped = false // Reset the tapped state
             }
         }
+    }
+}
+
+struct PokemonCell_Previews: PreviewProvider {
+    static var previews: some View {
+        PokemonCell(pokemon: Pokemon(id: UUID(),
+                                     name: "Pika",
+                                     url: "",
+                                     isFavorite: true),
+                    viewModel: PokemonViewModel(),
+                    isShowingModal: .constant(false),
+                    selectedPokemon: .constant(nil))
+            .previewLayout(.sizeThatFits)
     }
 }
